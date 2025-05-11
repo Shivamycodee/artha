@@ -1,0 +1,114 @@
+[
+  {
+    "tokenAddress": "GHZLvf4gV9dtgbcsWz4irvBHqt5mLVKU35KTynQWpump",
+    "compSOLSpent": 0.05,
+    "tokenOutAmount": 112329.18898800001,
+    "tokenOutAmountRaw": 112329188988,
+    "buyPricePerTokenInSOL": 5.209847e-7,
+    "totalFee": 0.000072,
+    "timestamp": "2025-05-07T07:07:04.078Z",
+    "compSOLEarned": 0.0005907120000000002
+  },
+  {
+    "tokenAddress": "G8zCpnBZH6t7NBu1urgECagbGFFrYbf9KaGPzsCK3cfV",
+    "compSOLSpent": 0.01,
+    "tokenOutAmount": 23115.666963,
+    "tokenOutAmountRaw": 23115666963,
+    "buyPricePerTokenInSOL": 4.3260703e-7,
+    "totalFee": 0.000008,
+    "timestamp": "2025-05-07T07:13:18.075Z",
+    "compSOLEarned": 0
+  },
+  {
+    "tokenAddress": "BJqVRfwirMkbfLYZ93SqREZwmWCb1y8vXYktBYVFpump",
+    "compSOLSpent": 0.07,
+    "tokenOutAmount": 114139.357825,
+    "tokenOutAmountRaw": 114139357825,
+    "buyPricePerTokenInSOL": 7.9480089e-7,
+    "totalFee": 0.00010400000000000002,
+    "timestamp": "2025-05-07T07:18:06.045Z",
+    "compSOLEarned": 0.0006766729999999992
+  },
+  {
+    "tokenAddress": "Bff3mKXiSENXdrvd6kCr6m7RCiKFCbzuAVdJhQ2cpump",
+    "compSOLSpent": 0.01,
+    "tokenOutAmount": 22526.555336,
+    "tokenOutAmountRaw": 22526555336,
+    "buyPricePerTokenInSOL": 4.4392051e-7,
+    "totalFee": 0.000008,
+    "timestamp": "2025-05-07T07:25:32.572Z",
+    "compSOLEarned": 0
+  },
+  {
+    "tokenAddress": "4XewGVRznM5tJ8QQjw7R2Y5vA9hrg8SgppcXDM5Dpump",
+    "compSOLSpent": 0.09999999999999999,
+    "tokenOutAmount": 178135.781151,
+    "tokenOutAmountRaw": 178135781151,
+    "buyPricePerTokenInSOL": 7.7500751e-7,
+    "totalFee": 0.00015200000000000004,
+    "timestamp": "2025-05-07T07:29:48.909Z",
+    "compSOLEarned": 0.0009217659999999992
+  },
+  {
+    "tokenAddress": "Eqo4WH5fZWvGc1mcmEpCVFRd97cr4ccxS5wG5zEmpump",
+    "compSOLSpent": 0.02,
+    "tokenOutAmount": 46893.225456,
+    "tokenOutAmountRaw": 46893225456,
+    "buyPricePerTokenInSOL": 4.2650084e-7,
+    "totalFee": 0.000024,
+    "timestamp": "2025-05-07T07:32:28.125Z",
+    "compSOLEarned": 0.001910653
+  },
+  {
+    "tokenAddress": "9ZskkTBYDU74Cc6YhVqeGMthqiW89jY3LweFvV6bpump",
+    "compSOLSpent": 0.11999999999999998,
+    "tokenOutAmount": 210532.19881600002,
+    "tokenOutAmountRaw": 210532198816,
+    "buyPricePerTokenInSOL": 8.1297512e-7,
+    "totalFee": 0.00018400000000000005,
+    "timestamp": "2025-05-07T07:39:20.615Z",
+    "compSOLEarned": 0.003954338999999999
+  },
+  {
+    "tokenAddress": "4heK4TdX9PyKby4G7dhf4t1AvuAAnK1nYA3DvrQhpump",
+    "compSOLSpent": 0.05,
+    "tokenOutAmount": 104826.10397799998,
+    "tokenOutAmountRaw": 104826103978,
+    "buyPricePerTokenInSOL": 5.1040739e-7,
+    "totalFee": 0.000072,
+    "timestamp": "2025-05-07T07:43:15.305Z",
+    "compSOLEarned": 0.0010935879999999995
+  },
+  {
+    "tokenAddress": "DyjmB3V6w6uKztzenzt9M4h1N2qHJxxGWAJTnepypump",
+    "compSOLSpent": 0.01,
+    "tokenOutAmount": 24399.116358,
+    "tokenOutAmountRaw": 24399116358,
+    "buyPricePerTokenInSOL": 4.0985091e-7,
+    "totalFee": 0.000008,
+    "timestamp": "2025-05-07T07:46:10.726Z",
+    "compSOLEarned": 0
+  },
+  {
+    "profitMargin": "double",
+    "tokenAddress": "7jibpZE45KWARK5Tb6P8NHNWpryFUPJ9RxWKXvampump",
+    "compSOLSpent": 0.01,
+    "tokenOutAmount": 22635.25902,
+    "tokenOutAmountRaw": 22635259020,
+    "buyPricePerTokenInSOL": 4.4178863e-7,
+    "totalFee": 0.000008,
+    "timestamp": "2025-05-07T08:31:33.701Z",
+    "compSOLEarned": 0
+  },
+  {
+    "profitMargin": "double",
+    "tokenAddress": "Gq1hfhMpjsi7kZ99tzzxU424u5SPbqh7B45CAdB1pump",
+    "compSOLSpent": 0.01,
+    "tokenOutAmount": 24280.226802,
+    "tokenOutAmountRaw": 24280226802,
+    "buyPricePerTokenInSOL": 4.1185777e-7,
+    "totalFee": 0.000008,
+    "timestamp": "2025-05-07T08:38:37.226Z",
+    "compSOLEarned": 0
+  }
+]
