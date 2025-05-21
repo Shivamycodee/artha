@@ -180,54 +180,77 @@ export function parseMarketAccountData(data: Buffer): MarketAccountData | null {
  * @returns {Promise<object>} – structured pool info
  */
 export async function getPoolInfo(tokenMint:string) {
-  // 1. Build and call the Pump API URL
-  const url = `https://swap-api.pump.fun/v1/pools/pair`
+
+  const trial = 10;
+  let pool = null;
+
+  for(let i=0;i<trial;i++){
+
+    const url = `https://swap-api.pump.fun/v1/pools/pair`
     + `?mintA=${tokenMint}`
     + `&mintB=${SOL_PUBLIC_ADDRESS}`
     // + `&sort=liquidity`;
 
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`API error: ${res.status} ${res.statusText}`);
-  }
-  const [pool] = await res.json();
-  if (!pool) {
-    throw new Error(`No pool found for token ${tokenMint}`);
-  }
+    try{
 
-  // 2. Extract raw reserves & decimals
-  const rawTokenReserve = BigInt(pool.baseReserves);
-  const rawSOLReserve   = BigInt(pool.quoteReserves);
-  const tokenDec        = pool.baseMintDecimals;
-  const solDec          = pool.quoteMintDecimals;
+      const res = await fetch(url);
+      
+      if (!res.ok) {
+        await new Promise((r) => setTimeout(r, 1000));
+        // console.error(`API error: ${res.status} ${res.statusText}`,res);
+        continue;
+      }
+      const [temp] = await res.json();
+      pool = temp;
+      
+      if (!pool) {
+        console.error(`No pool found for token ${tokenMint}`,pool);
+      }
 
-  // 3. Convert to human amounts
-  const tokenReserve = fromRaw(rawTokenReserve, tokenDec);
-  const solReserve   = fromRaw(rawSOLReserve, solDec);
+    }catch(e){
+       console.error("FOUND ERR IN getPoolInfo : ",e);
+    }
+      
+  return pool
 
-  // 4. Compute price in SOL: how many SOL per 1 token
-  const priceInSOL = solReserve / tokenReserve;
+}
 
-  // 5. Compute USD price
-  //    Pool.liquidityUSD = total USD value of BOTH sides.
-  //    So USD per SOL ≈ (liquidityUSD/2) / solReserve
-  //    Then token USD price = priceInSOL × USD per SOL
-  const liqUSD    = Number(pool.liquidityUSD);
-  const usdPerSOL = (liqUSD / 2) / solReserve;
-  const priceInUSD = priceInSOL * usdPerSOL;
+return pool;
+  
+  // // 2. Extract raw reserves & decimals
+  // const rawTokenReserve = BigInt(pool.baseReserves);
+  // const rawSOLReserve   = BigInt(pool.quoteReserves);
+  // const tokenDec        = pool.baseMintDecimals;
+  // const solDec          = pool.quoteMintDecimals;
 
-  // 6. Package and return!
-  return {
-    // poolAddress:    pool.address,
-    poolTimestamp:  pool.timestamp,
-    // solLiquidity:   solReserve,
-    // tokenLiquidity: formatNumberToKM(tokenReserve),
-    priceInSOL:     priceInSOL,
-    priceInUSD:     priceInUSD,
-    // volumeUSD:      formatNumberToKM(Number(pool.volumeUSD)),
-    // lpMint:         pool.lpMint,
-    // isCanonical:    pool.isCanonical,
-  };
+  // // 3. Convert to human amounts
+  // const tokenReserve = fromRaw(rawTokenReserve, tokenDec);
+  // const solReserve   = fromRaw(rawSOLReserve, solDec);
+
+  // // 4. Compute price in SOL: how many SOL per 1 token
+  // const priceInSOL = solReserve / tokenReserve;
+
+  // // 5. Compute USD price
+  // //    Pool.liquidityUSD = total USD value of BOTH sides.
+  // //    So USD per SOL ≈ (liquidityUSD/2) / solReserve
+  // //    Then token USD price = priceInSOL × USD per SOL
+  // const liqUSD    = Number(pool.liquidityUSD);
+  // const usdPerSOL = (liqUSD / 2) / solReserve;
+  // const priceInUSD = priceInSOL * usdPerSOL;
+
+  // // 6. Package and return!
+  // return {
+  //   // poolAddress:    pool.address,
+  //   poolTimestamp:  pool.timestamp,
+  //   // solLiquidity:   solReserve,
+  //   // tokenLiquidity: formatNumberToKM(tokenReserve),
+  //   priceInSOL:     priceInSOL,
+  //   priceInUSD:     priceInUSD,
+  //   // volumeUSD:      formatNumberToKM(Number(pool.volumeUSD)),
+  //   // lpMint:         pool.lpMint,
+  //   // isCanonical:    pool.isCanonical,
+  // };
+
 }
 
 
@@ -257,5 +280,26 @@ const getTotalProfit = ()=>{
 }
 
 
+const FetchMemePriceUSD = async(memeCoin:string)=>{
 
-getTotalProfit();
+
+  while(true){
+
+    try {
+      // const createdAt = new Date();
+      const priceResponse = await fetch(`${TOKEN_PRICE_URL}${memeCoin}/price`);
+      const price:number = await priceResponse.json();
+      // const elapsed = Math.floor((Date.now() - createdAt.getTime()) / 1000);
+      return price;
+    } catch (error) {
+      console.error(`Error fetching price for ${memeCoin}:`, error);
+    }
+  }
+
+}
+
+export function hasDecimal(number:number) {
+  return number % 1 !== 0;
+}
+
+

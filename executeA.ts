@@ -1,32 +1,25 @@
 import WebSocket from 'ws';
 import { Connection, PublicKey } from '@solana/web3.js';
 import {
-  timer,
   success,
   info,
   warning,
   error,
-  highlight,
-  REALISTIC_SWAP_CU,
-  MICRO_LAMPORTS_PER_CU,
   WSS_ENDPOINT,
   RPC_ENDPOINT,
   PUMP_AMM_PROGRAM_ID,
   MARKET_ACCOUNT_LENGTH,
   MARKET_DISCRIMINATOR,
   QUOTE_MINT_SOL,
-  type MarketAccountData,
-  type TradeFees,
-  type EnhancedMarketData,
   getFormattedUTCTime,
   fetchExistingMarketPubkeys,
   parseMarketAccountData,
-  getPoolInfo
+  getPoolInfo,
+  formatNumberToKM
 } from './utils.ts';
 import fs from 'fs';
-// import {simulateProfitLogic} from './quickTrade.ts'
-// import {simulateProfitLogic} from './oneTrade.ts';
-import {recordToken} from './record-price/priceTracker.ts'
+import {simulateProfitLogic} from './oneTrade.ts';
+// import {recordToken} from './record-price/priceTracker.ts'
 
 const connection = new Connection(RPC_ENDPOINT);
 
@@ -66,27 +59,36 @@ async function listenForNewMarkets() {
             
             if(isQuickPool) {
               processingPubkeys.delete(pubkey)
-              return 
-              // console.log(warning("Qick Pool Found: ",parsed.baseMint));
+              return
             }
       
-            console.log(success(`\n🚀 New Meme Detected at ${getFormattedUTCTime()} :`));
-            console.log(`  Token Address: ${warning(parsed.baseMint)}`);
-            // console.log(`  Owner : ${warning(parsed.creator)}  ${
-            //   PublicKey.isOnCurve(new PublicKey(parsed.creator)) ? '🔴 (User)' : '🟢 (Program)'
-            // }`);
+            // console.log('Full Parsed Data : ',parsed);
+
+            knownPubkeys.add(pubkey);
+            console.log(success(`\n🚀 New Meme Token ${warning(parsed.baseMint)} Detected at ${getFormattedUTCTime()} :`));
+
+            let poolInfo;
+            let liquidity;
+            let memeDecimal;
+
+            while(true){
+              try{
+                poolInfo = await getPoolInfo(parsed.baseMint);
+                liquidity = Number(poolInfo.liquidityUSD);
+                memeDecimal = Number(poolInfo.baseMintDecimals);
+                if(liquidity) break;
+                new Promise((r)=>setTimeout(r,800));
+              }catch(e){}
+            }
       
             saveTradeRecord({
               time:getFormattedUTCTime(),
-              token:parsed.baseMint
+              token:parsed.baseMint,
+              liquidity:formatNumberToKM(liquidity)
             })
-            knownPubkeys.add(pubkey);
 
-          // const pumpResponse =  await getPoolInfo(parsed.baseMint);
-          // console.log('pumpResponse : ',pumpResponse);
-            
-            // simulateProfitLogic(parsed.baseMint);
-            recordToken(parsed.baseMint,new Date());
+            simulateProfitLogic(parsed.baseMint,memeDecimal);
+            // recordToken(parsed.baseMint,new Date(),liquidity);
 
 
     } catch (err) {
@@ -112,7 +114,7 @@ async function listenForNewMarkets() {
               encoding: 'base64',
               commitment: 'confirmed',
               filters: [
-                { dataSize: MARKET_ACCOUNT_LENGTH },
+                { dataSize: 243 },
                 { memcmp: { offset: 0, bytes: MARKET_DISCRIMINATOR } },
                 { memcmp: { offset: 75, bytes: QUOTE_MINT_SOL } }
               ]
